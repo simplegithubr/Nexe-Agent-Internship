@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Calculator Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-calculator"></i>
+                    <h1>AI Calculator Agent</h1>
+                </div>
+                <p class="subtitle">Powered by OpenRouter AI • Natural Language Math Processing</p>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="calculator-section">
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <i class="fas fa-brain input-icon"></i>
+                        <input
+                            type="text"
+                            id="queryInput"
+                            placeholder="Ask me anything... (e.g., 'What is 25 + 37?' or 'Calculate square root of 144')"
+                            autocomplete="off"
+                        >
+                        <button id="calculateBtn" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Calculate
+                        </button>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-btn" data-query="What is 15 + 27?">
+                            <i class="fas fa-plus"></i> Addition
+                        </button>
+                        <button class="quick-btn" data-query="Calculate 48 - 19">
+                            <i class="fas fa-minus"></i> Subtraction
+                        </button>
+                        <button class="quick-btn" data-query="What is 12 times 8?">
+                            <i class="fas fa-times"></i> Multiplication
+                        </button>
+                        <button class="quick-btn" data-query="Divide 144 by 12">
+                            <i class="fas fa-divide"></i> Division
+                        </button>
+                        <button class="quick-btn" data-query="Calculate 2 to the power of 8">
+                            <i class="fas fa-superscript"></i> Power
+                        </button>
+                        <button class="quick-btn" data-query="Square root of 256">
+                            <i class="fas fa-square-root-alt"></i> Square Root
+                        </button>
+                    </div>
+                </div>
+
+                <div id="resultContainer" class="result-container" style="display: none;">
+                    <div class="result-header">
+                        <h3><i class="fas fa-check-circle"></i> Result</h3>
+                        <button id="closeResult" class="btn-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="result-content">
+                        <div class="result-expression">
+                            <span class="label">Expression:</span>
+                            <span id="resultExpression" class="value"></span>
+                        </div>
+                        <div class="result-answer">
+                            <span class="label">Answer:</span>
+                            <span id="resultAnswer" class="value-large"></span>
+                        </div>
+                        <div class="result-steps">
+                            <span class="label">Steps:</span>
+                            <ol id="resultSteps"></ol>
+                        </div>
+                        <div class="result-explanation">
+                            <span class="label">Explanation:</span>
+                            <p id="resultExplanation"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loadingIndicator" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>AI is calculating...</p>
+                </div>
+
+                <div id="errorContainer" class="error-container" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p id="errorMessage"></p>
+                </div>
+            </div>
+
+            <div class="memory-section">
+                <div class="memory-header">
+                    <h2><i class="fas fa-history"></i> Calculation Memory</h2>
+                    <button id="clearMemoryBtn" class="btn-secondary">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
+                <div id="memoryList" class="memory-list">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No calculations yet. Start by asking a math question!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

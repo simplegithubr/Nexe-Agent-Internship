@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Tool Agent</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 30px; }
+        h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { font-size: 1.1em; opacity: 0.9; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab:hover { background: rgba(255, 255, 255, 0.3); }
+        .tab.active { background: white; color: #667eea; }
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .tab-content.active { display: block; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #667eea; }
+        textarea { min-height: 120px; resize: vertical; }
+        button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: translateY(-2px); }
+        button:active { transform: translateY(0); }
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        .results.show { display: block; }
+        .result-item {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .result-title { font-weight: 600; color: #667eea; margin-bottom: 5px; }
+        .result-link { color: #764ba2; text-decoration: none; font-size: 14px; }
+        .result-snippet { color: #666; margin-top: 8px; line-height: 1.5; }
+        .loading { text-align: center; padding: 20px; color: #667eea; display: none; }
+        .loading.show { display: block; }
+        .success-message {
+            padding: 15px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        .success-message.show { display: block; }
+        .error-message {
+            padding: 15px;
+            background: #f8d7da;
+            color: #721c24;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        .error-message.show { display: block; }
+        .data-list { max-height: 400px; overflow-y: auto; }
+        .data-item {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .data-item-title { font-weight: 600; margin-bottom: 5px; }
+        .data-item-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        .data-item-content { color: #666; margin-top: 8px; }
+        .data-item-time { font-size: 12px; color: #999; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Multi-Tool Agent</h1>
+            <p class="subtitle">Web Search • Database • Email • AI Analysis</p>
+        </header>
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'search')">🔍 Web Search</button>
+            <button class="tab" onclick="switchTab(event, 'save')">💾 Save Data</button>
+            <button class="tab" onclick="switchTab(event, 'view')">📊 View Data</button>
+            <button class="tab" onclick="switchTab(event, 'email')">📧 Send Email</button>
+            <button class="tab" onclick="switchTab(event, 'analyze')">🤖 AI Analyze</button>
+            <button class="tab" onclick="switchTab(event, 'combo')">⚡ Search & Analyze</button>
+        </div>
+        <div id="search" class="tab-content active">
+            <h2>🔍 Web Search</h2>
+            <div class="form-group">
+                <label>Search Query</label>
+                <input type="text" id="searchQuery" placeholder="Enter your search query...">
+            </div>
+            <div class="form-group">
+                <label>Search Type</label>
+                <select id="searchType">
+                    <option value="web">Web Search</option>
+                    <option value="news">News Search</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Max Results</label>
+                <input type="number" id="maxResults" value="5" min="1" max="20">
+            </div>
+            <button onclick="performSearch()">Search</button>
+            <div class="loading" id="searchLoading">Searching...</div>
+            <div class="results" id="searchResults"></div>
+        </div>
+        <div id="save" class="tab-content">
+            <h2>💾 Save Data to Database</h2>
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="saveTitle" placeholder="Enter title...">
+            </div>
+            <div class="form-group">
+                <label>Content</label>
+                <textarea id="saveContent" placeholder="Enter content..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <input type="text" id="saveCategory" value="general" placeholder="Category...">
+            </div>
+            <button onclick="saveData()">Save to Database</button>
+            <div class="success-message" id="saveSuccess"></div>
+            <div class="error-message" id="saveError"></div>
+        </div>
+        <div id="view" class="tab-content">
+            <h2>📊 View Saved Data</h2>
+            <div class="form-group">
+                <label>Filter by Category (optional)</label>
+                <input type="text" id="filterCategory" placeholder="Leave empty for all...">
+            </div>
+            <button onclick="loadData()">Load Data</button>
+            <div class="loading" id="viewLoading">Loading...</div>
+            <div class="results" id="viewResults">
+                <div class="data-list" id="dataList"></div>
+            </div>
+        </div>
+        <div id="email" class="tab-content">
+            <h2>📧 Send Email</h2>
+            <div class="form-group">
+                <label>Recipient Email</label>
+                <input type="email" id="emailRecipient" placeholder="recipient@example.com">
+            </div>
+            <div class="form-group">
+                <label>Subject</label>
+                <input type="text" id="emailSubject" placeholder="Email subject...">
+            </div>
+            <div class="form-group">
+                <label>Message Body</label>
+                <textarea id="emailBody" placeholder="Email message..."></textarea>
+            </div>
+            <button onclick="sendEmail()">Send Email</button>
+            <div class="success-message" id="emailSuccess"></div>
+            <div class="error-message" id="emailError"></div>
+        </div>
+        <div id="analyze" class="tab-content">
+            <h2>🤖 AI Analysis</h2>
+            <div class="form-group">
+                <label>Your Prompt</label>
+                <textarea id="analyzePrompt" placeholder="Enter your question or text to analyze..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Model</label>
+                <select id="analyzeModel">
+                    <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+                    <option value="openai/gpt-4-turbo">GPT-4 Turbo</option>
+                    <option value="google/gemini-pro">Gemini Pro</option>
+                    <option value="meta-llama/llama-3-70b-instruct">Llama 3 70B</option>
+                </select>
+            </div>
+            <button onclick="analyzeText()">Analyze</button>
+            <div class="loading" id="analyzeLoading">Analyzing...</div>
+            <div class="results" id="analyzeResults"></div>
+        </div>
+        <div id="combo" class="tab-content">
+            <h2>⚡ Search & Analyze</h2>
+            <p style="color: #666; margin-bottom: 20px;">Search the web and get AI-powered analysis of results</p>
+            <div class="form-group">
+                <label>Search Query</label>
+                <input type="text" id="comboQuery" placeholder="What do you want to research?">
+            </div>
+            <button onclick="searchAndAnalyze()">Search & Analyze</button>
+            <div class="loading" id="comboLoading">Searching and analyzing...</div>
+            <div class="results" id="comboResults"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        function switchTab(event, tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        async function performSearch() {
+            const query = document.getElementById('searchQuery').value;
+            const type = document.getElementById('searchType').value;
+            const maxResults = document.getElementById('maxResults').value;
+            if (!query) { alert('Please enter a search query'); return; }
+            const loading = document.getElementById('searchLoading');
+            const results = document.getElementById('searchResults');
+            loading.classList.add('show');
+            results.classList.remove('show');
+            try {
+                const response = await fetch(`${API_BASE}/search`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, type, max_results: parseInt(maxResults) })
+                });
+                const data = await response.json();
+                loading.classList.remove('show');
+                results.classList.add('show');
+                if (data.results && data.results.length > 0) {
+                    results.innerHTML = `<h3>Found ${data.count} results for "${data.query}"</h3>` +
+                        data.results.map(r => `<div class="result-item"><div class="result-title">${r.title || 'No title'}</div>${r.link ? `<a href="${r.link}" target="_blank" class="result-link">${r.link}</a>` : ''}${r.snippet ? `<div class="result-snippet">${r.snippet}</div>` : ''}</div>`).join('');
+                } else { results.innerHTML = '<p>No results found</p>'; }
+            } catch (error) {
+                loading.classList.remove('show');
+                results.innerHTML = `<div class="error-message show">Error: ${error.message}</div>`;
+            }
+        }
+
+        async function saveData() {
+            const title = document.getElementById('saveTitle').value;
+            const content = document.getElementById('saveContent').value;
+            const category = document.getElementById('saveCategory').value;
+            if (!title || !content) { alert('Please fill in title and content'); return; }
+            const successMsg = document.getElementById('saveSuccess');
+            const errorMsg = document.getElementById('saveError');
+            successMsg.classList.remove('show');
+            errorMsg.classList.remove('show');
+            try {
+                const response = await fetch(`${API_BASE}/save`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, content, category })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    successMsg.textContent = data.message;
+                    successMsg.classList.add('show');
+                    document.getElementById('saveTitle').value = '';
+                    document.getElementById('saveContent').value = '';
+                } else {
+                    errorMsg.textContent = data.error || 'Failed to save';
+                    errorMsg.classList.add('show');
+                }
+            } catch (error) {
+                errorMsg.textContent = `Error: ${error.message}`;
+                errorMsg.classList.add('show');
+            }
+        }
+
+        async function loadData() {
+            const category = document.getElementById('filterCategory').value;
+            const loading = document.getElementById('viewLoading');
+            const results = document.getElementById('viewResults');
+            const dataList = document.getElementById('dataList');
+            loading.classList.add('show');
+            results.classList.remove('show');
+            try {
+                const url = category ? `${API_BASE}/data?category=${category}` : `${API_BASE}/data`;
+                const response = await fetch(url);
+                const data = await response.json();
+                loading.classList.remove('show');
+                results.classList.add('show');
+                if (data.data && data.data.length > 0) {
+                    dataList.innerHTML = data.data.map(item => `<div class="data-item"><div class="data-item-category">${item.category}</div><div class="data-item-title">${item.title}</div><div class="data-item-content">${item.content}</div><div class="data-item-time">${new Date(item.timestamp).toLocaleString()}</div></div>`).join('');
+                } else { dataList.innerHTML = '<p>No data found</p>'; }
+            } catch (error) {
+                loading.classList.remove('show');
+                dataList.innerHTML = `<div class="error-message show">Error: ${error.message}</div>`;
+            }
+        }
+
+        async function sendEmail() {
+            const recipient = document.getElementById('emailRecipient').value;
+            const subject = document.getElementById('emailSubject').value;
+            const body = document.getElementById('emailBody').value;
+            if (!recipient || !subject || !body) { alert('Please fill in all fields'); return; }
+            const successMsg = document.getElementById('emailSuccess');
+            const errorMsg = document.getElementById('emailError');
+            successMsg.classList.remove('show');
+            errorMsg.classList.remove('show');
+            try {
+                const response = await fetch(`${API_BASE}/email`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ recipient, subject, body })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    successMsg.textContent = data.message;
+                    successMsg.classList.add('show');
+                    document.getElementById('emailRecipient').value = '';
+                    document.getElementById('emailSubject').value = '';
+                    document.getElementById('emailBody').value = '';
+                } else {
+                    errorMsg.textContent = data.message || 'Failed to send email';
+                    errorMsg.classList.add('show');
+                }
+            } catch (error) {
+                errorMsg.textContent = `Error: ${error.message}`;
+                errorMsg.classList.add('show');
+            }
+        }
+
+        async function analyzeText() {
+            const prompt = document.getElementById('analyzePrompt').value;
+            const model = document.getElementById('analyzeModel').value;
+            if (!prompt) { alert('Please enter a prompt'); return; }
+            const loading = document.getElementById('analyzeLoading');
+            const results = document.getElementById('analyzeResults');
+            loading.classList.add('show');
+            results.classList.remove('show');
+            try {
+                const response = await fetch(`${API_BASE}/analyze`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt, model })
+                });
+                const data = await response.json();
+                loading.classList.remove('show');
+                results.classList.add('show');
+                if (data.success) {
+                    results.innerHTML = `<div class="result-item"><div class="result-title">AI Analysis Result</div><div style="margin-top: 10px; white-space: pre-wrap;">${data.result}</div><div style="margin-top: 15px; font-size: 12px; color: #999;">Model: ${data.model}<br>Tokens: ${data.usage.total_tokens}</div></div>`;
+                } else {
+                    results.innerHTML = `<div class="error-message show">${data.error}</div>`;
+                }
+            } catch (error) {
+                loading.classList.remove('show');
+                results.innerHTML = `<div class="error-message show">Error: ${error.message}</div>`;
+            }
+        }
+
+        async function searchAndAnalyze() {
+            const query = document.getElementById('comboQuery').value;
+            if (!query) { alert('Please enter a search query'); return; }
+            const loading = document.getElementById('comboLoading');
+            const results = document.getElementById('comboResults');
+            loading.classList.add('show');
+            results.classList.remove('show');
+            try {
+                const response = await fetch(`${API_BASE}/search-and-analyze`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, max_results: 5 })
+                });
+                const data = await response.json();
+                loading.classList.remove('show');
+                results.classList.add('show');
+                let html = `<h3>Search Results for "${data.query}"</h3>`;
+                if (data.search_results && data.search_results.length > 0) {
+                    html += data.search_results.map(r => `<div class="result-item"><div class="result-title">${r.title}</div>${r.link ? `<a href="${r.link}" target="_blank" class="result-link">${r.link}</a>` : ''}${r.snippet ? `<div class="result-snippet">${r.snippet}</div>` : ''}</div>`).join('');
+                }
+                if (data.analysis && data.analysis.success) {
+                    html += `<div style="margin-top: 30px;"><h3>🤖 AI Analysis</h3><div class="result-item"><div style="white-space: pre-wrap;">${data.analysis.result}</div></div></div>`;
+                }
+                results.innerHTML = html;
+            } catch (error) {
+                loading.classList.remove('show');
+                results.innerHTML = `<div class="error-message show">Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

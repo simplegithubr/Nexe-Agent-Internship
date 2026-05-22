@@ -1,0 +1,111 @@
+
+═══════════════════════════════════════════════════════════════
+    🚀 MULTI-TOOL AGENT - HOW TO RUN
+═══════════════════════════════════════════════════════════════
+
+📍 Current Location:
+   E:\nexe_agent_intership\INTERMEDIATE\Multi-Tool Agent
+
+✅ STATUS: All components successfully installed and tested!
+
+═══════════════════════════════════════════════════════════════
+    STEP 1: Configure API Key (IMPORTANT!)
+═══════════════════════════════════════════════════════════════
+
+1. Open file: backend\.env
+2. Replace "your_openrouter_api_key_here" with your actual API key
+3. Get free API key from: https://openrouter.ai/keys
+
+Example:
+OPENROUTER_API_KEY=sk-or-v1-xxxxxxxxxxxxxxxxxxxxx
+
+═══════════════════════════════════════════════════════════════
+    STEP 2: Start the Server
+═══════════════════════════════════════════════════════════════
+
+METHOD 1 - Double click:
+   start.bat
+
+METHOD 2 - Command line:
+   cd backend
+   python app.py
+
+You should see:
+   🚀 Multi-Tool Agent Server Starting...
+   🌐 Server running at http://localhost:5000
+
+═══════════════════════════════════════════════════════════════
+    STEP 3: Open Browser
+═══════════════════════════════════════════════════════════════
+
+Navigate to: http://localhost:5000
+
+═══════════════════════════════════════════════════════════════
+    FEATURES TO TRY
+═══════════════════════════════════════════════════════════════
+
+1. 🔍 Web Search (No API key needed)
+   - Search anything on the web
+   - Try news search
+   - Results saved to database
+
+2. 💾 Save Data
+   - Save notes with categories
+   - View all saved data
+   - Filter by category
+
+3. 🤖 AI Analysis (Needs API key)
+   - Ask questions
+   - Get AI-powered answers
+   - Multiple models available
+
+4. ⚡ Search & Analyze (Needs API key)
+   - Search + AI summary
+   - Best for research
+
+5. 📧 Send Email (Optional - needs SMTP)
+   - Configure SMTP in .env
+   - Send emails programmatically
+
+═══════════════════════════════════════════════════════════════
+    TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+Problem: Port 5000 already in use
+Solution: Edit backend\app.py, change port to 5001
+
+Problem: Module not found
+Solution: cd backend && pip install -r requirements.txt
+
+Problem: OpenRouter not working
+Solution: Check API key in backend\.env file
+
+═══════════════════════════════════════════════════════════════
+    PROJECT STRUCTURE
+═══════════════════════════════════════════════════════════════
+
+Multi-Tool Agent/
+├── backend/
+│   ├── agents/          # AI agents
+│   ├── database/        # SQLite database
+│   ├── app.py          # Flask API server
+│   ├── .env            # Your configuration
+│   └── requirements.txt
+├── frontend/
+│   └── index.html      # Beautiful web UI
+├── start.bat           # Quick start script
+├── README.md           # Full documentation
+└── QUICKSTART.md       # Quick start guide
+
+═══════════════════════════════════════════════════════════════
+    QUICK TEST
+═══════════════════════════════════════════════════════════════
+
+1. Start server: start.bat
+2. Open: http://localhost:5000
+3. Click "Web Search" tab
+4. Search for: "Python programming"
+5. See results!
+
+═══════════════════════════════════════════════════════════════
+

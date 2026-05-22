@@ -1,0 +1,59 @@
+# Environment variables
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+.env.test
+*.env
+
+# API Keys and Credentials
+**/secrets/
+**/credentials/
+credentials.json
+secrets.json
+api_keys.json
+config.secret.*
+
+# Private keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.cer
+*.crt
+id_rsa
+id_dsa
+
+# Cloud provider credentials
+.aws/
+.azure/
+.gcloud/
+gcloud-service-key.json
+
+# Database
+*.db-journal
+*.sqlite
+*.sqlite3
+database.yml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

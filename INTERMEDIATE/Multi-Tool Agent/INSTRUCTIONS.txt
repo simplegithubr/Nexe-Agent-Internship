@@ -1,0 +1,30 @@
+╔══════════════════════════════════════════════════════════════╗
+║  HOW TO START MULTI-TOOL AGENT SERVER                       ║
+╚══════════════════════════════════════════════════════════════╝
+
+STEP 1: Open Command Prompt
+  • Press: Windows Key + R
+  • Type: cmd
+  • Press: Enter
+
+STEP 2: Copy and paste this command:
+
+cd "E:\nexe_agent_intership\INTERMEDIATE\Multi-Tool Agent\backend" && python app.py
+
+STEP 3: Press Enter
+
+STEP 4: Wait for "Server running at http://localhost:5000"
+
+STEP 5: Open browser and go to: http://localhost:5000
+
+STEP 6: Press Ctrl+F5 to refresh
+
+⚠️  Keep the Command Prompt window open!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+QUICK COMMAND (Copy this):
+
+cd "E:\nexe_agent_intership\INTERMEDIATE\Multi-Tool Agent\backend" && python app.py
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

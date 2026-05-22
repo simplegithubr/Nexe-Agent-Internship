@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool-Calling AI Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Tool-Calling AI Agent</h1>
+            <p class="subtitle">Interact with AI-powered tools</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Tool Selection -->
+            <div class="tool-selector">
+                <h2>Select Tool</h2>
+                <div class="tool-buttons">
+                    <button class="tool-btn active" data-tool="calculator">
+                        🧮 Calculator
+                    </button>
+                    <button class="tool-btn" data-tool="time">
+                        🕐 Time
+                    </button>
+                    <button class="tool-btn" data-tool="weather">
+                        🌤️ Weather
+                    </button>
+                    <button class="tool-btn" data-tool="analyzer">
+                        📝 Text Analyzer
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tool Interfaces -->
+            <div class="tool-interfaces">
+                <!-- Calculator -->
+                <div class="tool-interface active" id="calculator-interface">
+                    <h3>Calculator</h3>
+                    <div class="form-group">
+                        <label>Operation</label>
+                        <select id="calc-operation">
+                            <option value="add">Add (+)</option>
+                            <option value="subtract">Subtract (-)</option>
+                            <option value="multiply">Multiply (×)</option>
+                            <option value="divide">Divide (÷)</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Number 1</label>
+                            <input type="number" id="calc-num1" placeholder="Enter first number" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Number 2</label>
+                            <input type="number" id="calc-num2" placeholder="Enter second number" value="5">
+                        </div>
+                    </div>
+                    <button class="execute-btn" onclick="executeCalculator()">Calculate</button>
+                </div>
+
+                <!-- Time -->
+                <div class="tool-interface" id="time-interface">
+                    <h3>Current Time</h3>
+                    <p class="info-text">Get the current date and time</p>
+                    <button class="execute-btn" onclick="executeTime()">Get Time</button>
+                </div>
+
+                <!-- Weather -->
+                <div class="tool-interface" id="weather-interface">
+                    <h3>Weather Check</h3>
+                    <div class="form-group">
+                        <label>City Name</label>
+                        <input type="text" id="weather-city" placeholder="Enter city name" value="Karachi">
+                        <small>Available: Karachi, Lahore, Islamabad, London, New York</small>
+                    </div>
+                    <button class="execute-btn" onclick="executeWeather()">Check Weather</button>
+                </div>
+
+                <!-- Text Analyzer -->
+                <div class="tool-interface" id="analyzer-interface">
+                    <h3>Text Analyzer</h3>
+                    <div class="form-group">
+                        <label>Text to Analyze</label>
+                        <textarea id="analyzer-text" rows="4" placeholder="Enter text to analyze...">Hello World! This is a test message.</textarea>
+                    </div>
+                    <button class="execute-btn" onclick="executeAnalyzer()">Analyze Text</button>
+                </div>
+            </div>
+
+            <!-- Results Display -->
+            <div class="results-section">
+                <h2>Results</h2>
+                <div id="results-container" class="results-container">
+                    <p class="placeholder">Results will appear here...</p>
+                </div>
+            </div>
+
+            <!-- History -->
+            <div class="history-section">
+                <h2>History</h2>
+                <button class="clear-btn" onclick="clearHistory()">Clear History</button>
+                <div id="history-container" class="history-container">
+                    <p class="placeholder">No history yet</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Built with ❤️ using Flask & Vanilla JS</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
