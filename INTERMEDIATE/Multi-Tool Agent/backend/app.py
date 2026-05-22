@@ -174,6 +174,7 @@ if __name__ == '__main__':
     print(f"🔍 Search: Enabled (DuckDuckGo)")
     print(f"📧 Email: {'Enabled' if os.getenv('SMTP_USER') else 'Not configured'}")
     print(f"🤖 OpenRouter: {'Enabled' if openrouter_agent else 'Not configured'}")
-    print("\n🌐 Server running at http://localhost:5000")
+    port = int(os.getenv('PORT', 7860))
+    print(f"\n🌐 Server running on port: {port}")
 
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=port)

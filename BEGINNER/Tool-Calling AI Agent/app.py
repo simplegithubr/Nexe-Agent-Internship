@@ -123,8 +123,9 @@ if __name__ == '__main__':
     print("\n" + "="*60)
     print("🚀 Tool-Calling Agent Web UI")
     print("="*60)
-    print("\n📍 Server starting at: http://localhost:5000")
+    port = int(os.getenv('PORT', 7860))
+    print(f"\n📍 Server starting on port: {port}")
     print("📋 Available tools:", ", ".join(agent.get_available_tools()))
     print("\n" + "="*60 + "\n")
 
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=port)

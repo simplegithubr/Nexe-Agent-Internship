@@ -59,7 +59,7 @@ Always provide accurate calculations and clear explanations."""
     headers = {
         'Authorization': f'Bearer {OPENROUTER_API_KEY}',
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'http://localhost:5000',
+        'HTTP-Referer': 'https://huggingface.co/spaces',
         'X-Title': 'AI Calculator Agent'
     }
 
@@ -82,9 +82,8 @@ Always provide accurate calculations and clear explanations."""
     }
 
     try:
-        print(f"DEBUG - API Key (first 20 chars): {OPENROUTER_API_KEY[:20] if OPENROUTER_API_KEY else 'None'}")
+        print(f"DEBUG - API Key configured: {'YES' if OPENROUTER_API_KEY else 'NO'}")
         print(f"DEBUG - Model: {data['model']}")
-        print(f"DEBUG - URL: {OPENROUTER_API_URL}")
         response = requests.post(OPENROUTER_API_URL, headers=headers, json=data, timeout=30)
         print(f"DEBUG - Response status: {response.status_code}")
         response.raise_for_status()
@@ -188,7 +187,7 @@ if __name__ == '__main__':
     print("AI Calculator Agent Starting...")
     print("=" * 50)
     print(f"OpenRouter API configured: {'YES' if OPENROUTER_API_KEY else 'NO'}")
-    port = int(os.getenv('PORT', 7860))
-    print(f"Server running on port: {port}")
+    print(f"Server running on port 7860 for Hugging Face")
     print("=" * 50)
-    app.run(host='0.0.0.0', port=port, debug=False)
+    # Hugging Face Spaces uses port 7860
+    app.run(host='0.0.0.0', port=7860, debug=False)
