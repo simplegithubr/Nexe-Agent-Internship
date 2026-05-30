@@ -1,0 +1,26 @@
+{
+  "name": "rag-assistant",
+  "version": "1.0.0",
+  "description": "RAG Assistant - Document Q&A System with AI",
+  "main": "backend/app.py",
+  "scripts": {
+    "start": "cd backend && python app.py",
+    "test": "cd backend && python test_api.py",
+    "verify": "cd backend && python verify_setup.py"
+  },
+  "keywords": [
+    "rag",
+    "ai",
+    "document-qa",
+    "vector-store",
+    "chromadb",
+    "openrouter",
+    "llama"
+  ],
+  "author": "Nexe Agent Internship",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/rag-assistant"
+  }
+}
